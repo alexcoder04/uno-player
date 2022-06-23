@@ -3,10 +3,11 @@
 import tensorflow as tf
 import numpy as np
 
-base_folder = "../../data/colors/"
+#base_folder = "../../data/colors/"
+base_folder = "../../data/numbers/"
 
 train_ds = tf.keras.utils.image_dataset_from_directory(
-    "../../data/colors/raw",
+    base_folder,
     validation_split=0.2,
     subset="training",
     seed=123,
@@ -14,7 +15,7 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
     batch_size=10)
 
 val_ds = tf.keras.utils.image_dataset_from_directory(
-    "../../data/colors/raw",
+    base_folder,
     validation_split=0.2,
     subset="validation",
     seed=123,
@@ -69,5 +70,6 @@ def test(filename):
     print(f"{filename} => {class_names[res]}")
 
 for i in ["./b/9-8.jpg", "./g/4-9.jpg", "./b/2-10.jpg", "./r/r-6.jpg", "./g/2-10.jpg", "./b/2-1.jpg", "./r/1-10.jpg", "./y/8-7.jpg", "./y/7-6.jpg", "./y/1-10.jpg"]:
-    test("../../data/colors/raw/" + i)
+#for i in ["./1/y4.jpg", "./6/b2.jpg", "./2/r6.jpg", "./n/g10.jpg", "./1/r1.jpg", "./7/y9.jpg", "./2/y7.jpg", "./r/y2.jpg", "./n/y9.jpg", "./4/g10.jpg"]:
+    test(base_folder + i)
 
