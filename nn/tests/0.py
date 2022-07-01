@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 import tensorflow as tf
-import numpy as np
+#import test_default as test
+import test_raspi as test
 
 #base_folder = "../../data/colors/"
 base_folder = "../../data/numbers/"
@@ -53,23 +54,5 @@ history = model.fit(
   epochs=epochs
 )
 
-def test(filename):
-    img = tf.keras.preprocessing.image.load_img(filename, target_size=(32,32))
-    X = tf.keras.preprocessing.image.img_to_array(img)
-    X = np.expand_dims(X, axis=0)
-    images = np.vstack([X])
-
-    val = model.predict(images)
-    max_val = -1000
-    res = 1000
-    for i, v in enumerate(val[0]):
-        if v >= max_val:
-            max_val = v
-            res = i
-
-    print(f"{filename} => {class_names[res]}")
-
-for i in ["./b/9-8.jpg", "./g/4-9.jpg", "./b/2-10.jpg", "./r/r-6.jpg", "./g/2-10.jpg", "./b/2-1.jpg", "./r/1-10.jpg", "./y/8-7.jpg", "./y/7-6.jpg", "./y/1-10.jpg"]:
-#for i in ["./1/y4.jpg", "./6/b2.jpg", "./2/r6.jpg", "./n/g10.jpg", "./1/r1.jpg", "./7/y9.jpg", "./2/y7.jpg", "./r/y2.jpg", "./n/y9.jpg", "./4/g10.jpg"]:
-    test(base_folder + i)
+test.run_test(model, class_names, base_folder)
 
