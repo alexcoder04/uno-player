@@ -18,6 +18,7 @@ using machine learning but simple rules, the game is not so complex).
 ## Roadmap
 
  - save and load the model on disk
+ - number recognition -> load image in greyscale
  - some smart gameplay rules
  - input cards into the game with the AI
    - wait for the AI to be "sure enough" about the picture, only then use it
