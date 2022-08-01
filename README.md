@@ -20,6 +20,7 @@ using machine learning but simple rules, the game is not so complex).
  - save and load the model on disk
  - be so smart and save number of cards of other players
  - number recognition -> load image in greyscale
+ - save images on Google Drive, not in Git Repo (:
  - some smart gameplay rules
  - input cards into the game with the AI
    - wait for the AI to be "sure enough" about the picture, only then use it

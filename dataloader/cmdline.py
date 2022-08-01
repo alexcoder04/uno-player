@@ -1,4 +1,8 @@
 
+"""
+Command-Line Interface for entering the cards and other data
+"""
+
 import os
 
 
@@ -9,8 +13,9 @@ class CmdLineDataloader:
     def get_players_number(self):
         while True:
             try:
-                return int(input("players number: "))
+                return int(input("Players number: "))
             except ValueError:
+                print("Sorry, this is not a number")
                 continue
 
     def read_card(self, prompt):
@@ -30,7 +35,7 @@ class CmdLineDataloader:
             if color == "s" and number not in ("j","+4"):
                 print("Sorry, invalid number, use (j,+4)")
                 continue
-            special = 1 if color == "s" else 0
+            special = True if color == "s" else False
             return color, number, special
 
     def get_how_many_to_pull(self):
