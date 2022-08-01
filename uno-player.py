@@ -5,15 +5,15 @@
 # | (_| | |  __/>  < (_| (_) | (_| |  __/ |  | |_| |__   _|
 #  \__,_|_|\___/_/\_\___\___/ \__,_|\___|_|   \___/   |_|  
 # 
-# Copyright (c) 2021 alexcoder04 <https://github.com/alexcoder04>
+# Copyright (c) 2021-2022 alexcoder04 <https://github.com/alexcoder04>
 # 
 # a script that can play the Uno card game
 # requires: sqlite3
 #
 
-import os
 import random
 import sqlite3
+from dataloader import CmdLineDataloader
 
 
 CARDS_BEGIN = 7
@@ -23,18 +23,19 @@ class UnoPlayer:
     def __init__(self) -> None:
         print("Creating Uno player...")
         print("Creating database...")
+        self.dl = CmdLineDataloader()
         self.made_first_move = False
         self.skip_pull = None
         self.conn = sqlite3.connect(":memory:")
         self.cursor = self.conn.cursor()
         self.cursor.execute("CREATE TABLE mycards (id integer PRIMARY KEY AUTOINCREMENT, color text, number text, special boolean)")
-        self.players_number = self.get_int("players number: ")
+        self.players_number = self.dl.get_players_number()
         print("reading own cards...")
         for _ in range(CARDS_BEGIN):
-            color, number, special = self.get_card("given card: ")
+            color, number, special = self.dl.read_card("given card: ")
             self.cursor.execute(f"INSERT INTO mycards (color, number, special) VALUES ('{color}', '{number}', {special})")
         self.conn.commit()
-        self.clear_screen()
+        self.dl.clear()
         print("I am now ready to play!")
 
     def best_color(self):
@@ -51,43 +52,9 @@ class UnoPlayer:
                 selected.add(color)
         return random.choice(list(selected))
 
-    def clear_screen(self):
-        input("Press <enter> to clear the screen and continue")
-        os.system("clear")
-
     def get_all_cards(self):
         self.cursor.execute("SELECT * FROM mycards")
         return self.cursor.fetchall()
-
-    def get_int(self, prompt):
-        while True:
-            try:
-                return int(input(prompt))
-            except ValueError:
-                continue
-
-    def get_card(self, prompt):
-        while True:
-            [color, number] = input(prompt).split(",")
-            color, number = color.strip(), number.strip()
-            if color not in ("r", "g", "b", "y", "s"):
-                print("invalid color")
-                continue
-            if color != "s" and number not in ("0","1","2","3","4","5","6","7","8","9","r","n","+2","j"):
-                print("invalid number")
-                continue
-            if color == "s" and number not in ("j","+4"):
-                print("invalid number")
-                continue
-            special = 1 if color == "s" else 0
-            return color, number, special
-
-    def get_pull_number(self):
-        inp = input("pull: ")
-        try:
-            return int(inp)
-        except ValueError:
-            return 0
 
     def say(self, message):
         message = "-----" + message + "-----"
@@ -97,7 +64,7 @@ class UnoPlayer:
         print(header)
 
     def handle_pull(self, curColor, curNumber):
-        color, number, special = self.get_card("I pulled: ")
+        color, number, special = self.dl.read_card("I pulled: ")
         if special == 1:
             self.say("put pulled card")
             self.say(f"I want {self.best_color()}!")
@@ -107,7 +74,7 @@ class UnoPlayer:
             return
         self.cursor.execute(f"INSERT INTO mycards (color, number, special) VALUES ('{color}', '{number}', {special})")
         self.conn.commit()
-        self.clear_screen()
+        self.dl.clear()
 
     def game_loop(self):
         while True:
@@ -121,15 +88,15 @@ class UnoPlayer:
             if self.made_first_move:
                 print("Zug beendet")
             if self.skip_pull is None:
-                pull = self.get_pull_number()
+                pull = self.dl.get_how_many_to_pull()
                 if pull != 0:
                     for _ in range(pull):
-                        color, number, special = self.get_card("pull card: ")
+                        color, number, special = self.dl.read_card("pull card: ")
                         self.cursor.execute(f"INSERT INTO mycards (color, number, special) VALUES ('{color}', '{number}', {special})")
                     self.conn.commit()
-                    self.clear_screen()
+                    self.dl.clear()
                     continue
-                curColor, curNumber, _ = self.get_card("current: ")
+                curColor, curNumber, _ = self.dl.read_card("current: ")
             else:
                 (curColor, curNumber) = self.skip_pull
                 self.skip_pull = None
