@@ -6,8 +6,8 @@ import tensorflow as tf
 import test_default as test
 #import test_raspi as test
 
-#base_folder = "../../data/colors/"
-base_folder = "../../data/numbers/"
+detect = "numbers"
+base_folder = f"../../data/{detect}/"
 
 train_ds = tf.keras.utils.image_dataset_from_directory(
     base_folder,
@@ -53,7 +53,7 @@ if not os.path.isdir(checkpoint_dir):
 
 if "load-test" in sys.argv:
     model.load_weights(checkpoint_path)
-    test.run_test(model, class_names, base_folder)
+    test.run_test(model, class_names, base_folder, detect)
     sys.exit(0)
 
 model.compile(optimizer='adam',

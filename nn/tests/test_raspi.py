@@ -30,7 +30,7 @@ def test(model, class_names, filename):
 
     print(f"{filename} => {class_names[res]}")
 
-def run_test(model, class_names, base_folder):
+def run_test(model, class_names, base_folder, detect):
     while input("press enter...").strip() == "":
         print("requesting image on raspberry...")
         subprocess.run(["ssh", f"pi@{RASPI_IP}", "sudo", "raspistill", "-o", "/tmp/image.jpg"])
