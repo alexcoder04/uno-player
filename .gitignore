@@ -1,5 +1,7 @@
 data/colors
 data/numbers
+data/*_new
+data/gdrive.link
 nn/saved
 __pycache__
 .vimsession
