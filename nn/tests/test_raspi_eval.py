@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# this test script takes images on a raspberry pi and tries them
+# this test script takes images on a raspberry pi and tries them + saving weights
 
 import numpy as np
 import os
@@ -26,6 +26,12 @@ def get_max(val):
             res = i
     return res
 
+def gen_res_string(val, actual, class_names):
+    res = f"{actual} -> "
+    for i, v in enumerate(val):
+        res += f"{class_names[i]}={v:0.2g};"
+    return res + "\n"
+
 def test(model, class_names, filename, mode):
     #img = tf.keras.preprocessing.image.load_img(filename, target_size=(32,32))
     #X = tf.keras.preprocessing.image.img_to_array(img)
@@ -49,8 +55,15 @@ def test(model, class_names, filename, mode):
     res = get_max(val)
 
     print(f"{filename} => {class_names[res]}")
-    for i, v in enumerate(val[0]):
-        print(f"{class_names[i]} = {v}")
+    actual = input("actual: ")
+    if actual.strip() == "":
+        actual = class_names[res]
+    else:
+        actual = actual.strip()
+    res_str = gen_res_string(val[0], actual, class_names)
+    with open(f"/home/alex/results", "a") as f:
+        f.write(res_str)
+    print(res_str)
 
 def run_test(model, class_names, base_folder, detect):
     while input("press enter...").strip() == "":

@@ -1,17 +1,29 @@
 #!/usr/bin/env python3
 
 import tensorflow as tf
-import test_default as test
-#import test_raspi as test
 
 #detect = "numbers"
 detect = "colors"
+#detect = "colors_new"
+#detect = "numbers_new"
 base_folder = f"../../data/{detect}/"
+save_folder = f"../saved/{detect}"
+
+color_mode="rgb"
+#color_mode="grayscale"
+
+if detect.startswith("colors"):
+    epochs = 3
+if detect.startswith("numbers"):
+    epochs = 5
+
+#epochs=5
 
 print("--- Loading data ---")
 
 train_ds = tf.keras.utils.image_dataset_from_directory(
     base_folder,
+    color_mode=color_mode,
     validation_split=0.2,
     subset="training",
     seed=123,
@@ -20,6 +32,7 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
 
 val_ds = tf.keras.utils.image_dataset_from_directory(
     base_folder,
+    color_mode=color_mode,
     validation_split=0.2,
     subset="validation",
     seed=123,
@@ -35,8 +48,13 @@ val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
 print("--- Creating model ---")
 
+def get_input_shape(color_mode):
+    if color_mode == "rgb":
+        return (32, 32, 3)
+    return (32, 32, 1)
+
 model = tf.keras.models.Sequential([
-    tf.keras.layers.Rescaling(1./255, input_shape=(32, 32, 3)),
+    tf.keras.layers.Rescaling(1./255, input_shape=get_input_shape(color_mode)),
     tf.keras.layers.Conv2D(16, 3, padding='same', activation='relu'),
     tf.keras.layers.MaxPooling2D(),
     tf.keras.layers.Conv2D(32, 3, padding='same', activation='relu'),
@@ -54,20 +72,15 @@ model.compile(optimizer='adam',
 
 print("--- Training model ---")
 
-epochs=5
 history = model.fit(
   train_ds,
   validation_data=val_ds,
   epochs=epochs
 )
 
-print("--- Testing model ---")
-
-test.run_test(model, class_names, base_folder, detect)
-
 print("--- Saving model ---")
 
-model.save("../saved/model.h5")
-model.save_weights("../saved/model_weights")
+model.save(f"{save_folder}/model.h5")
+model.save_weights(f"{save_folder}/model_weights")
 print("Done")
 
