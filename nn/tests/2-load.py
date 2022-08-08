@@ -2,11 +2,11 @@
 
 import tensorflow as tf
 #import test_default as test
-#import test_raspi as test
-import test_raspi_eval as test
+import test_raspi as test
+#import test_raspi_eval as test
 
-#detect = "numbers"
-detect = "colors"
+detect = "numbers"
+#detect = "colors"
 #detect = "numbers_new"
 #detect = "colors_new"
 base_folder = f"../../data/{detect}/"

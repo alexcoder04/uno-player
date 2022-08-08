@@ -4,7 +4,7 @@ import sys
 import os
 
 colors = ["b", "r", "y", "g", "j"]
-numbers = [str(i) for i in range(1, 9)] + ["n", "r", "+2", "+4", "j"]
+numbers = [str(i) for i in range(0, 10)] + ["n", "r", "+2", "+4", "j"]
 
 def run_color():
     os.mkdir("./colors")

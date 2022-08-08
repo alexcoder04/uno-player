@@ -7,6 +7,7 @@ import os
 import subprocess
 import sys
 import tensorflow as tf
+import requests
 
 mode = "rgb"
 #mode = "grayscale"
@@ -54,9 +55,12 @@ def test(model, class_names, filename, mode):
 
 def run_test(model, class_names, base_folder, detect):
     while input("press enter...").strip() == "":
-        print("requesting image on raspberry...")
-        subprocess.run(["ssh", f"pi@{RASPI_IP}", "sudo", "raspistill", "-o", "/tmp/image.jpg"])
-        print("loading image from raspberry...")
-        subprocess.run(["rsync", f"pi@{RASPI_IP}:/tmp/image.jpg", "/tmp/image.jpg"])
-        test(model, class_names, "/tmp/image.jpg", detect)
+        #print("requesting image on raspberry...")
+        #subprocess.run(["ssh", f"pi@{RASPI_IP}", "sudo", "raspistill", "-o", "/tmp/image.jpg"])
+        #print("loading image from raspberry...")
+        #subprocess.run(["rsync", f"pi@{RASPI_IP}:/tmp/image.jpg", "/tmp/image.jpg"])
+        resp = requests.get("http://"+RASPI_IP+":8000/image.jpeg")
+        with open("/tmp/image.jpeg", "wb") as f:
+            f.write(resp.content)
+        test(model, class_names, "/tmp/image.jpeg", detect)
 

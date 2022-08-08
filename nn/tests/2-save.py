@@ -15,9 +15,9 @@ color_mode="rgb"
 if detect.startswith("colors"):
     epochs = 3
 if detect.startswith("numbers"):
-    epochs = 5
+    epochs = 6
 
-#epochs=5
+epochs=2
 
 print("--- Loading data ---")
 

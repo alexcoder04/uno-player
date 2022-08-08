@@ -10,7 +10,7 @@ class CmdLineDataloader:
     def __init__(self) -> None:
         pass
 
-    def get_players_number(self):
+    def get_players_number(self) -> int:
         while True:
             try:
                 return int(input("Players number: "))
@@ -18,7 +18,7 @@ class CmdLineDataloader:
                 print("Sorry, this is not a number")
                 continue
 
-    def read_card(self, prompt):
+    def read_card(self, prompt: str) -> (str, str, bool):
         while True:
             try:
                 [color, number] = input(prompt).split(",")
@@ -38,14 +38,14 @@ class CmdLineDataloader:
             special = True if color == "s" else False
             return color, number, special
 
-    def get_how_many_to_pull(self):
+    def get_how_many_to_pull(self) -> int:
         inp = input("Do I have to pull? If so, how much: ")
         try:
             return int(inp)
         except ValueError:
             return 0
 
-    def clear(self):
+    def clear(self) -> None:
         input("Press <enter> to clear the screen and continue")
         os.system("clear")
 

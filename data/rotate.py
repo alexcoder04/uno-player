@@ -14,7 +14,9 @@ if "colors" in sys.argv:
 if "numbers" in sys.argv:
     for c in os.listdir("./numbers"):
         for f in os.listdir(f"./numbers/{c}"):
-            if random.randint(0, 1) == 0:
-                print(f"{c}/{f}")
-                os.system(f"mogrify -rotate 180 ./numbers/{c}/{f}")
+            #if random.randint(0, 1) == 0:
+            #    print(f"{c}/{f}")
+            #    os.system(f"mogrify -rotate 180 ./numbers/{c}/{f}")
+            print(f"{c}/{f}")
+            os.system(f"convert -rotate 180 ./numbers/{c}/{f} ./numbers/{c}/{f.split('.')[0]+'-rotated.jpg'}")
 
