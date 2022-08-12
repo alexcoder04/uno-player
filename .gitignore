@@ -1,8 +1,18 @@
+
+# raw data
 data/trash
 data/colors
 data/numbers
 data/raw
-nn/saved
+
+# saved models
+nn/saved/colors
+nn/saved/numbers
+
+# python
 __pycache__
+
+# editors
 .vimsession
 .vscode
+
