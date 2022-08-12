@@ -1,23 +1,27 @@
 #!/usr/bin/env python3
+#
+# train the model for recognizing the cards and save it
+# 
 
 import tensorflow as tf
+import json
 
-#detect = "numbers"
-detect = "colors"
-#detect = "colors_new"
-#detect = "numbers_new"
-base_folder = f"../../data/{detect}/"
-save_folder = f"../saved/{detect}"
+# what to train for
+detect = "numbers"
+#detect = "colors"
+
+base_folder = f"./data/{detect}/"
+save_folder = f"./nn/saved/{detect}"
 
 color_mode="rgb"
 #color_mode="grayscale"
 
+# number of epochs to run
+epochs=2
 if detect.startswith("colors"):
     epochs = 3
 if detect.startswith("numbers"):
     epochs = 6
-
-epochs=2
 
 print("--- Loading data ---")
 
@@ -80,7 +84,11 @@ history = model.fit(
 
 print("--- Saving model ---")
 
+# save the model, trained weights and class names
 model.save(f"{save_folder}/model.h5")
 model.save_weights(f"{save_folder}/model_weights")
+with open(f"{save_folder}/classes.json", "w") as f:
+    json.dump(class_names, f)
+
 print("Done")
 

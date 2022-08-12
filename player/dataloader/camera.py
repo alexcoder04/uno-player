@@ -3,20 +3,19 @@
 Default Camera Interface for entering the cards and other data
 """
 
-import os
 import numpy as np
 import requests
 import tensorflow as tf
 
 
 RASPI_IP = "192.168.178.39"
-BASE_PATH = "./nn/saved"
+BASE_PATH = "../nn/saved"
 COLORS_PATH = f"{BASE_PATH}/colors"
 NUMBERS_PATH = f"{BASE_PATH}/numbers"
 
 
 c_ds = tf.keras.utils.image_dataset_from_directory(
-    f"./data/colors",
+    f"../data/colors",
     color_mode="rgb",
     validation_split=0.2,
     subset="training",
@@ -24,7 +23,7 @@ c_ds = tf.keras.utils.image_dataset_from_directory(
     image_size=(32, 32),
     batch_size=10)
 n_ds = tf.keras.utils.image_dataset_from_directory(
-    f"./data/numbers",
+    f"../data/numbers",
     color_mode="rgb",
     validation_split=0.2,
     subset="training",

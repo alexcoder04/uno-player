@@ -2,14 +2,16 @@
 
 import sys
 import os
-import random
+#import random
 
 if "colors" in sys.argv:
     for c in os.listdir("./colors"):
         for f in os.listdir(f"./colors/{c}"):
-            if random.randint(0, 1) == 0:
-                print(f"{c}/{f}")
-                os.system(f"mogrify -rotate 180 ./colors/{c}/{f}")
+            #if random.randint(0, 1) == 0:
+            #    print(f"{c}/{f}")
+            #    os.system(f"mogrify -rotate 180 ./colors/{c}/{f}")
+            print(f"{c}/{f}")
+            os.system(f"convert -rotate 180 ./numbers/{c}/{f} ./numbers/{c}/{f.split('.')[0]+'-rotated.jpg'}")
 
 if "numbers" in sys.argv:
     for c in os.listdir("./numbers"):
