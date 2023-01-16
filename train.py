@@ -11,7 +11,8 @@ detect = "numbers"
 #detect = "colors"
 
 base_folder = f"./data/{detect}/"
-save_folder = f"./nn/saved/{detect}"
+#save_folder = f"./nn/saved/{detect}"
+save_folder = f"./saved"
 
 color_mode="rgb"
 #color_mode="grayscale"

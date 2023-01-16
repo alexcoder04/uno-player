@@ -4,12 +4,16 @@ import tensorflow as tf
 import os
 import numpy as np
 
-detect = "numbers"
-#detect = "colors"
+#detect = "numbers"
+detect = "colors"
 #detect = "numbers_new"
 #detect = "colors_new"
-base_folder = f"../../data/{detect}/"
-saved_folder = f"../saved/{detect}"
+#base_folder = f"../../data/{detect}/"
+#saved_folder = f"../saved/{detect}"
+
+base_folder = f"../../data/trash/{detect}_1/"
+saved_folder = f"/home/alex/Temp/{detect}"
+
 #color_mode = "grayscale"
 color_mode = "rgb"
 
@@ -42,9 +46,9 @@ model.load_weights(f"{saved_folder}/model_weights")
 
 all_counter = 0
 right_counter = 0
-for c in os.listdir("/home/alex/_/Uno/TEST_IMG"):
-    for i in os.listdir(f"/home/alex/_/Uno/TEST_IMG/{c}"):
-        img = tf.keras.preprocessing.image.load_img(f"/home/alex/_/Uno/TEST_IMG/{c}/{i}", target_size=(32,32))
+for c in os.listdir(base_folder):
+    for i in os.listdir(f"{base_folder}/{c}"):
+        img = tf.keras.preprocessing.image.load_img(f"{base_folder}/{c}/{i}", target_size=(32,32))
         X = tf.keras.preprocessing.image.img_to_array(img)
         X = np.expand_dims(X, axis=0)
         images = np.vstack([X])
@@ -57,18 +61,11 @@ for c in os.listdir("/home/alex/_/Uno/TEST_IMG"):
                 max_val = v
                 res = i
     
-        if detect == "numbers":
-            if class_names[res] == c[1:]:
-                print(f"{c}/{i} => OK")
-                right_counter += 1
-            else:
-                print(f"{c}/{i} => WRONG")
+        if class_names[res] == c:
+            print(f"{c}/{i} => OK")
+            right_counter += 1
         else:
-            if class_names[res] == c[1]:
-                print(f"{c}/{i} => OK")
-                right_counter += 1
-            else:
-                print(f"{c}/{i} => WRONG")
+            print(f"{c}/{i} => WRONG")
         all_counter += 1
 
 

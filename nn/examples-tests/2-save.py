@@ -3,12 +3,15 @@
 import tensorflow as tf
 import json
 
-detect = "numbers"
-#detect = "colors"
+#detect = "numbers"
+detect = "colors"
 #detect = "colors_new"
 #detect = "numbers_new"
-base_folder = f"../../data/{detect}/"
-save_folder = f"../saved/{detect}"
+#base_folder = f"../../data/{detect}/"
+#save_folder = f"../saved/{detect}"
+
+base_folder = f"../../data/trash/{detect}_2/"
+save_folder = f"/home/alex/Temp/{detect}"
 
 color_mode="rgb"
 #color_mode="grayscale"
